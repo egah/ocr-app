@@ -24,7 +24,7 @@ file_jpg = os.path.join(path, selected_filename)
 st.write('File `%s` has been selected' % file_jpg)
 #image jpeg
 st.markdown('**file to OCR**')
-st.image(file_jpg, width=5, use_column_width= True)
+st.image(file_jpg, width=1000, use_column_width=True)
 # document de reference
 for file in glob.glob(os.path.join(path, '*.txt')):
     if selected_filename[0:-4]==file[5:-4]:
