@@ -9,6 +9,7 @@ import cv2
 import pytesseract
 from decimal import Decimal
 pytesseract.pytesseract.tesseract_cmd = r"C:\Program Files\Tesseract-OCR\tesseract.exe"
+from asprise_ocr_api import *
 
 def tesseract_ocr(jpg_file, lang):
     image=cv2.imread(jpg_file)
@@ -36,7 +37,7 @@ def easy_ocr(jpg_file, detail):
 def cloudmersive_ocr(jpg_file, lang):
     # Configure API key authorization: Apikey
     configuration = cloudmersive_ocr_api_client.Configuration()
-    configuration.api_key['Apikey'] = '85d19384-bb8c-4388-a169-4b377558c881'
+    configuration.api_key['Apikey'] = 'd572c584-3e08-460a-a999-498413d2c8ca'
     # Uncomment below to setup prefix (e.g. Bearer) for API key, if needed
     # configuration.api_key_prefix['Apikey'] = 'Bearer'
     # create an instance of the API class
