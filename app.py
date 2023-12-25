@@ -1,107 +1,83 @@
-from utils import tesseract_ocr, abbyy_ocr, cloudmersive_ocr , easy_ocr, asprise_ocr , bag_of_words, cosine_similarity
+import os
+from PIL import Image
+
 import streamlit as st
-import pandas as pd
-import time
-import os, glob
-from decimal import Decimal
+
+from utils import (
+    tesseract_ocr,
+    abbyy_ocr,
+)
+
+st.set_page_config(
+    page_title="OCR Engine",
+    layout="centered",
+    initial_sidebar_state="expanded",
+    page_icon=":mag:",
+)
 
 st.title("Optical Character Recognition")
-st.markdown("<br></br>",unsafe_allow_html=True)
 
 # Main title
-st.sidebar.markdown("<center> <img src='https://www.ccr-re.com/o/ccr-re-theme/images/footer-logos-groupe.png' width='200'> </center>",unsafe_allow_html=True)
-st.sidebar.markdown("<br></br>",unsafe_allow_html=True)
+# st.sidebar.markdown(
+#    "<center> <img src='picture.jpg' width='200'> </center>",
+#    unsafe_allow_html=True,
+# )
+
+st.sidebar.image("picture.jpg", width=200, use_column_width=False)
+
+# with open("description.html", mode="r") as description:
+#    html_file = description.read()
+# st.sidebar.markdown(html_file, unsafe_allow_html=True)
+st.sidebar.caption("# Epiphane Egah 🤗️🚀️\n")
+st.sidebar.info(
+    """Analytics Enginee : Python - NLP - Statistics - Machine learning -
+    Deep learning  - DevOps - MLops"""
+)
 
 # Settings
-st.sidebar.title("Settings")
 
-OCR = st.sidebar.multiselect('Select OCR engine',('Tesseract', 'Abbyy', 'EasyOCR', 'Cloudmersive OCR', 'Asprise OCR'))
-path ='data'
+# OCR = st.multiselect(
+#    "Select OCR engine",
+#    ("Tesseract", "Abbyy")
+# )
+st.markdown(
+    "<b><h3 style='color: #77B5FE;'>Select OCR engine</h4></b>", unsafe_allow_html=True
+)
+OCR = st.selectbox(" ", ("Tesseract", "Abbyy"))
+path = "data"
 
-filenames = [file for file in os.listdir(path) if  file[(len(file)-3):len(file)] in ['jpg','pdf','png']]
-selected_filename = st.sidebar.selectbox('Select file to analyze', filenames)
-file_jpg = os.path.join(path, selected_filename)
-st.write('File `%s` has been selected' % file_jpg)
-#image jpeg
-st.markdown('**file to OCR**')
-st.image(file_jpg, width=1000, use_column_width=True)
-# document de reference
-for file in glob.glob(os.path.join(path, '*.txt')):
-    if selected_filename[0:-4]==file[5:-4]:
-        with open(file, encoding='utf8',errors='ignore') as f:
-            ref = f.read()
-        break
+st.markdown(
+    "<b><h3 style='color: #FF0000;'>Upload a file</h4></b>", unsafe_allow_html=True
+)
+uploaded_file = st.file_uploader("", type=["jpg", "png", "jpeg"])
+
+if uploaded_file is not None:
+    # Use the file
+    # st.markdown("**file to OCR**")
+    uploaded_image = Image.open(uploaded_file)
+    # Use the image
+    # st.image(uploaded_image, width=1000, use_column_width=True)
+
+
+if OCR == "Tesseract" and uploaded_file is not None:
+    ocr_result = tesseract_ocr(uploaded_image, "eng")
+    with open("ocr_result.txt", "w", encoding="utf-8") as file:
+        file.write(ocr_result)
+    st.download_button(
+        label="Download OCR Result",
+        data=open("ocr_result.txt", "r", encoding="utf-8").read(),
+        file_name="ocr_result.txt",
+        mime="text/plain",
+    )
+
+# TODO add an api key for AbbyyOCR and allowed user to use abbyoce to
+if OCR == "Abbyy" and uploaded_file is not None:
+    pass
 
 # Other info
 st.sidebar.title("Description")
-st.sidebar.info("This basic app is at testing and comparing various OCR services applied to reinsurance documents")
+st.sidebar.info("This basic app can be used to ocr file with tesseracct and AbbyyOCR. ")
 st.sidebar.title("Disclaimer")
-st.sidebar.info("For any questions or further details regarding techniques used, please contact acouloumy@ccr.fr")
-
-# Calculations
-df= pd.DataFrame(OCR)
-Accuracy= []
-cosine= []
-temps= []
-for elem in OCR:
-    if elem == 'Tesseract':
-        start= time.time()
-        result= tesseract_ocr(file_jpg, 'eng+fra')
-        end= time.time()
-        temp=float(Decimal(str(round(end - start,2))))
-        accuracy= bag_of_words(ref, result)
-        temps.append(str(temp)+' s')
-        Accuracy.append(str(accuracy)+' %')
-        cosine.append(str(cosine_similarity(ref, result)))
-        st.markdown('**Tesseract OCR Output**')
-        st.text(result)
-    elif elem== 'Abbyy':
-        start= time.time()
-        result= abbyy_ocr(file_jpg, "english,french")
-        end= time.time()
-        temp=float(Decimal(str(round(end - start,2))))
-        accuracy= bag_of_words(ref, result)
-        temps.append(str(temp)+' s')
-        Accuracy.append(str(accuracy)+' %')
-        cosine.append(str(cosine_similarity(ref, result)))
-        st.markdown('** Abbyy OCR Output**')
-        st.text(result)
-    elif  elem=='EasyOCR':
-        start= time.time()
-        result= easy_ocr(file_jpg,0)
-        end= time.time()
-        temp=float(Decimal(str(round(end - start,2))))
-        accuracy= bag_of_words(ref, result)
-        temps.append(str(temp)+' s')
-        Accuracy.append(str(accuracy)+' %')
-        cosine.append(str(cosine_similarity(ref, result)))
-        st.markdown('**EasyOCR Output**')
-        st.text(result)
-    elif elem=='Cloudmersive OCR':
-        start= time.time()
-        result= cloudmersive_ocr(file_jpg, 'ENG+FRA')
-        end= time.time()
-        temp=float(Decimal(str(round(end - start,2))))
-        accuracy= bag_of_words(ref, result)
-        temps.append(str(temp)+' s')
-        Accuracy.append(str(accuracy)+' %')
-        cosine.append(str(cosine_similarity(ref, result)))
-        st.markdown('**Cloudmersive OCR Output**')
-        st.text(result)
-    elif elem== 'Asprise OCR':
-        start= time.time()
-        result= asprise_ocr(file_jpg, 'fra')
-        end= time.time()
-        temp=float(Decimal(str(round(end - start,2))))
-        accuracy= bag_of_words(ref, result)
-        temps.append(str(temp)+' s')
-        Accuracy.append(str(accuracy)+' %')
-        cosine.append(str(cosine_similarity(ref, result)))
-        st.markdown('**Asprise OCR Output**')
-        st.text(result)
-
-st.markdown('**Metrics**')
-df['time']=temps
-df['word_accuracy']= Accuracy
-df['cosine_similarity']= cosine
-st.write(df.head())
+st.sidebar.info(
+    "For any questions or further details regarding techniques used, please contact egahepiphane@gmail.com"
+)
