@@ -87,9 +87,6 @@ testpath==0.4.4
 tifffile==2020.8.13
 toml==0.10.1
 toolz==0.10.0
-torch==1.6.0+cpu
-torchvision==0.7.0+cpu
-tornado==6.0.4
 traitlets==4.3.3
 tzlocal==2.1
 urllib3==1.25.10
