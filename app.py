@@ -8,17 +8,31 @@ from utils import (
     abbyy_ocr,
 )
 
+st.set_page_config(
+    page_title="OCR Engine",
+    layout="centered",
+    initial_sidebar_state="expanded",
+    page_icon=":mag:",
+)
 
 st.title("Optical Character Recognition")
-st.markdown("<br></br>", unsafe_allow_html=True)
 
 # Main title
 # st.sidebar.markdown(
 #    "<center> <img src='picture.jpg' width='200'> </center>",
 #    unsafe_allow_html=True,
 # )
-st.sidebar.image("picture.jpg", width=150, use_column_width=False)
-st.sidebar.markdown("<br></br>", unsafe_allow_html=True)
+
+st.sidebar.image("picture.jpg", width=200, use_column_width=False)
+
+# with open("description.html", mode="r") as description:
+#    html_file = description.read()
+# st.sidebar.markdown(html_file, unsafe_allow_html=True)
+st.sidebar.caption("# Epiphane Egah 🤗️🚀️\n")
+st.sidebar.info(
+    """Analytics Enginee : Python - NLP - Statistics - Machine learning -
+    Deep learning  - DevOps - MLops"""
+)
 
 # Settings
 
@@ -26,14 +40,16 @@ st.sidebar.markdown("<br></br>", unsafe_allow_html=True)
 #    "Select OCR engine",
 #    ("Tesseract", "Abbyy")
 # )
-st.markdown("<b><h4>Select OCR engine</h4></b>", unsafe_allow_html=True)
+st.markdown(
+    "<b><h3 style='color: #77B5FE;'>Select OCR engine</h4></b>", unsafe_allow_html=True
+)
 OCR = st.selectbox(" ", ("Tesseract", "Abbyy"))
 path = "data"
 
-st.markdown("<b><h4>Upload a file to ocr</h4></b>", unsafe_allow_html=True)
-uploaded_file = st.file_uploader(
-    "", type=["jpg", "png", "jpeg"]
+st.markdown(
+    "<b><h3 style='color: #FF0000;'>Upload a file</h4></b>", unsafe_allow_html=True
 )
+uploaded_file = st.file_uploader("", type=["jpg", "png", "jpeg"])
 
 if uploaded_file is not None:
     # Use the file
