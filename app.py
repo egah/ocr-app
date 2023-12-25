@@ -70,6 +70,9 @@ if OCR == "Tesseract" and uploaded_file is not None:
         mime="text/plain",
     )
 
+# TODO add an api key for AbbyyOCR and allowed user to use abbyoce to
+if OCR == "Abbyy" and uploaded_file is not None:
+    pass
 
 # Other info
 st.sidebar.title("Description")
