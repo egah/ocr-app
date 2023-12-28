@@ -33,7 +33,8 @@ def main():
     )
 
     st.markdown(
-        "<b><h3 style='color: #3585CD;'>Select a language</h4></b>", unsafe_allow_html=True
+        "<b><h3 style='color: #3585CD;'>Select a language</h4></b>",
+        unsafe_allow_html=True,
     )
     language = None
     language = st.selectbox("", ["eng", "fra"])
@@ -63,7 +64,7 @@ def main():
     if language is not None and uploaded_file is not None:
         ocr_result = tesseract_ocr(uploaded_image, language)
         with open("ocr_result.txt", "w", encoding="utf-8") as file:
-            file.write(ocr_result) 
+            file.write(ocr_result)
         st.download_button(
             label="Download OCR Result",
             data=open("ocr_result.txt", "r", encoding="utf-8").read(),
