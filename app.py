@@ -32,14 +32,21 @@ def main():
         Deep learning  - DevOps - MLops"""
     )
 
-    # Settings
+    st.markdown(
+        "<b><h3 style='color: #3585CD;'>Select a language</h4></b>", unsafe_allow_html=True
+    )
+    language = None
+    language = st.selectbox("", ["eng", "fra"])
 
-    # OCR = st.multiselect(
-    #    "Select OCR engine",
-    #    ("Tesseract", "Abbyy")
-    # )
-
-    # OCR = st.selectbox(" ", ("Tesseract", "Abbyy"))
+    # TODO : add a possible languages support by tesseract
+    # options = ['"france"', '"germany"', '"italy"', '"spain"', '"sweden"',]
+    # Text input for filter criteria
+    # filter = st.text_input('Enter filter criteria')
+    # Filter options
+    # filtered_options = [option for option in options if filter.lower() in option.lower()]
+    # Select box with filtered options
+    # selected_option = st.selectbox('', filtered_options)
+    # st.write(f'You selected: {selected_option}')
 
     st.markdown(
         "<b><h3 style='color: #FF0000;'>Upload a file</h4></b>", unsafe_allow_html=True
@@ -53,10 +60,10 @@ def main():
         # Use the image
         # st.image(uploaded_image, width=1000, use_column_width=True)
 
-    if uploaded_file is not None:
-        ocr_result = tesseract_ocr(uploaded_image, "eng")
+    if language is not None and uploaded_file is not None:
+        ocr_result = tesseract_ocr(uploaded_image, language)
         with open("ocr_result.txt", "w", encoding="utf-8") as file:
-            file.write(ocr_result)
+            file.write(ocr_result) 
         st.download_button(
             label="Download OCR Result",
             data=open("ocr_result.txt", "r", encoding="utf-8").read(),
@@ -67,7 +74,7 @@ def main():
     # Other info
     st.sidebar.title("Description")
     st.sidebar.info(
-        "This basic app can be used to ocr file with tesseracct and AbbyyOCR. "
+        "This basic app can be used to ocr (text to image) file with tesseract."
     )
     st.sidebar.title("Disclaimer")
     st.sidebar.info(
