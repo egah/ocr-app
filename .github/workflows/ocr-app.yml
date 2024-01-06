@@ -6,9 +6,9 @@ name: ocr-egine
 
 on:
   push:
-    branches: [ "github-deploy" ]
+    branches: [ "develop" ]
   pull_request:
-    branches: [ "github-deploy" ]
+    branches: [ "develop" ]
 
 permissions:
   contents: read
