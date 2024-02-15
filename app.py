@@ -1,15 +1,7 @@
-import os
-
 import streamlit as st
 from PIL import Image
 
 from utils import tesseract_ocr
-
-# Get the dynamically assigned port from the environment variable PORT
-port = int(os.environ.get("PORT", 5000))
-st.write(os.environ)
-# Set the Streamlit server port
-st.set_option('server.port', port)
 
 
 def main():
